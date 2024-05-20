@@ -18,7 +18,15 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "cmsis_os.h"
+#include "FreeRTOS.h"
+#include "task.h"
+
+#include "queue.h"
+
+//#include "stm32f10x.h"
+//#include "stm32f10x_gpio.h"
+//#include "stm32f10x_rcc.h"
+//#include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -41,15 +49,15 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-osThreadId defaultTaskHandle;
+//osThreadId defaultTaskHandle;
 uint32_t defaultTaskBuffer[ 128 ];
-osStaticThreadDef_t defaultTaskControlBlock;
-osThreadId LED1TaskHandle;
+//osStaticThreadDef_t defaultTaskControlBlock;
+//osThreadId LED1TaskHandle;
 uint32_t LED1TaskBuffer[ 128 ];
-osStaticThreadDef_t LED1TaskControlBlock;
-osThreadId LED2TaskHandle;
+//osStaticThreadDef_t LED1TaskControlBlock;
+//osThreadId LED2TaskHandle;
 uint32_t LED2TaskBuffer[ 128 ];
-osStaticThreadDef_t LED2TaskControlBlock;
+//osStaticThreadDef_t LED2TaskControlBlock;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -67,7 +75,23 @@ void StartLED2Task(void const * argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void vTask1( void *pvParametrs ) {
+	for( ;; ) {
+		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
 
+		HAL_Delay(400);
+	}
+	vTaskDelete( NULL );
+}
+
+void vTask2( void *pvParametrs ) {
+	for( ;; ) {
+		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
+
+		HAL_Delay(500);
+	}
+	vTaskDelete( NULL );
+}
 /* USER CODE END 0 */
 
 /**
@@ -120,26 +144,35 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadStaticDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128, defaultTaskBuffer, &defaultTaskControlBlock);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  //osThreadStaticDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128, defaultTaskBuffer, &defaultTaskControlBlock);
+  //defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+
+
 
   /* definition and creation of LED1Task */
-  osThreadStaticDef(LED1Task, StartLED1Task, osPriorityNormal, 0, 128, LED1TaskBuffer, &LED1TaskControlBlock);
-  LED1TaskHandle = osThreadCreate(osThread(LED1Task), NULL);
+ // osThreadStaticDef(LED1Task, StartLED1Task, osPriorityNormal, 0, 128, LED1TaskBuffer, &LED1TaskControlBlock);
+  //LED1TaskHandle = osThreadCreate(osThread(LED1Task), NULL);
 
   /* definition and creation of LED2Task */
-  osThreadStaticDef(LED2Task, StartLED2Task, osPriorityNormal, 0, 128, LED2TaskBuffer, &LED2TaskControlBlock);
-  LED2TaskHandle = osThreadCreate(osThread(LED2Task), NULL);
+ // osThreadStaticDef(LED2Task, StartLED2Task, osPriorityNormal, 0, 128, LED2TaskBuffer, &LED2TaskControlBlock);
+//  LED2TaskHandle = osThreadCreate(osThread(LED2Task), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */
-  osKernelStart();
+ // osKernelStart();
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+   	xTaskCreate( vTask1, "Task1", 1000, NULL, 1, NULL );
+
+   	xTaskCreate( vTask2, "Task2", 1000, NULL, 1, NULL );
+
+   	vTaskStartScheduler();
   while (1)
   {
     /* USER CODE END WHILE */
