@@ -75,7 +75,7 @@ void StartLED2Task(void const * argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void vTask1( void *pvParametrs ) {
+/*void vTask1( void *pvParametrs ) {
 	for( ;; ) {
 		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
 
@@ -92,6 +92,7 @@ void vTask2( void *pvParametrs ) {
 	}
 	vTaskDelete( NULL );
 }
+*/
 /* USER CODE END 0 */
 
 /**
@@ -101,7 +102,23 @@ void vTask2( void *pvParametrs ) {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+	void vTask1( void *pvParametrs ) {
+		for( ;; ) {
+			HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
 
+			HAL_Delay(400);
+		}
+		vTaskDelete( NULL );
+	}
+
+	void vTask2( void *pvParametrs ) {
+		for( ;; ) {
+			HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
+
+			HAL_Delay(700);
+		}
+		vTaskDelete( NULL );
+	}
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -168,9 +185,9 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-   	xTaskCreate( vTask1, "Task1", 1000, NULL, 1, NULL );
+   	xTaskCreate( vTask1, "Task1", 128, NULL, 2, NULL );
 
-   	xTaskCreate( vTask2, "Task2", 1000, NULL, 1, NULL );
+  	xTaskCreate( vTask2, "Task2", 128, NULL, 2, NULL );
 
    	vTaskStartScheduler();
   while (1)
@@ -263,16 +280,16 @@ static void MX_GPIO_Init(void)
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const * argument)
-{
+//void StartDefaultTask(void const * argument)
+//{
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
+//  for(;;)
+//  {
+ //   osDelay(1);
+//  }
   /* USER CODE END 5 */
-}
+//}
 
 /* USER CODE BEGIN Header_StartLED1Task */
 /**
@@ -280,7 +297,9 @@ void StartDefaultTask(void const * argument)
 * @param argument: Not used
 * @retval None
 */
+
 /* USER CODE END Header_StartLED1Task */
+
 void StartLED1Task(void const * argument)
 {
   /* USER CODE BEGIN StartLED1Task */
@@ -291,7 +310,7 @@ void StartLED1Task(void const * argument)
 	      HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
 	  }
 
-    osDelay(200);
+  //  osDelay(200);
   }
   /* USER CODE END StartLED1Task */
 }
@@ -310,7 +329,7 @@ void StartLED2Task(void const * argument)
   for(;;)
   {
 	HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
-    osDelay(1000);
+  //  osDelay(1000);
   }
   /* USER CODE END StartLED2Task */
 }
