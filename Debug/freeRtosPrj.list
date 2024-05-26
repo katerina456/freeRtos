@@ -39,11 +39,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_line   0000bcac  00000000  00000000  0003b8b3  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    00058989  00000000  00000000  0004755f  2**0
+ 18 .debug_str    0005897b  00000000  00000000  0004755f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000050  00000000  00000000  0009fee8  2**0
+ 19 .comment      00000050  00000000  00000000  0009feda  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  000027c8  00000000  00000000  0009ff38  2**2
+ 20 .debug_frame  000027c8  00000000  00000000  0009ff2c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -266,13 +266,13 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
  800024c:	2000002c 	.word	0x2000002c
  8000250:	20000080 	.word	0x20000080
 
-08000254 <vTask1.1>:
+08000254 <LED1Task.1>:
   * @retval int
   */
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	void vTask1( void *pvParametrs ) {
+	void LED1Task( void *pvParametrs ) {
  8000254:	b580      	push	{r7, lr}
  8000256:	b082      	sub	sp, #8
  8000258:	af00      	add	r7, sp, #0
@@ -283,7 +283,7 @@ int main(void)
 			HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
  8000260:	2380      	movs	r3, #128	; 0x80
  8000262:	005b      	lsls	r3, r3, #1
- 8000264:	4a05      	ldr	r2, [pc, #20]	; (800027c <vTask1.1+0x28>)
+ 8000264:	4a05      	ldr	r2, [pc, #20]	; (800027c <LED1Task.1+0x28>)
  8000266:	0019      	movs	r1, r3
  8000268:	0010      	movs	r0, r2
  800026a:	f000 fcac 	bl	8000bc6 <HAL_GPIO_TogglePin>
@@ -294,7 +294,7 @@ int main(void)
  8000272:	0018      	movs	r0, r3
  8000274:	f000 fa48 	bl	8000708 <HAL_Delay>
 			HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
- 8000278:	e7f2      	b.n	8000260 <vTask1.1+0xc>
+ 8000278:	e7f2      	b.n	8000260 <LED1Task.1+0xc>
  800027a:	46c0      	nop			; (mov r8, r8)
  800027c:	48000800 	.word	0x48000800
 
@@ -369,7 +369,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-   	xTaskCreate( vTask1, "Task1", 128, NULL, 2, NULL );
+   	xTaskCreate( LED1Task, "Task1", 128, NULL, 2, NULL );
  80002e4:	1d3b      	adds	r3, r7, #4
  80002e6:	3314      	adds	r3, #20
  80002e8:	2201      	movs	r2, #1
@@ -384,7 +384,7 @@ int main(void)
  80002fa:	2280      	movs	r2, #128	; 0x80
  80002fc:	f001 fbe6 	bl	8001acc <xTaskCreate>
 
-  	xTaskCreate( vTask2, "Task2", 128, NULL, 2, NULL );
+  	xTaskCreate( LED2Task, "Task2", 128, NULL, 2, NULL );
  8000300:	1d3b      	adds	r3, r7, #4
  8000302:	2201      	movs	r2, #1
  8000304:	4313      	orrs	r3, r2
@@ -408,8 +408,8 @@ int main(void)
  800032c:	080028d0 	.word	0x080028d0
  8000330:	080028d8 	.word	0x080028d8
 
-08000334 <vTask2.0>:
-	void vTask2( void *pvParametrs ) {
+08000334 <LED2Task.0>:
+	void LED2Task( void *pvParametrs ) {
  8000334:	b580      	push	{r7, lr}
  8000336:	b082      	sub	sp, #8
  8000338:	af00      	add	r7, sp, #0
@@ -419,7 +419,7 @@ int main(void)
 			HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
  8000340:	2380      	movs	r3, #128	; 0x80
  8000342:	009b      	lsls	r3, r3, #2
- 8000344:	4a05      	ldr	r2, [pc, #20]	; (800035c <vTask2.0+0x28>)
+ 8000344:	4a05      	ldr	r2, [pc, #20]	; (800035c <LED2Task.0+0x28>)
  8000346:	0019      	movs	r1, r3
  8000348:	0010      	movs	r0, r2
  800034a:	f000 fc3c 	bl	8000bc6 <HAL_GPIO_TogglePin>
@@ -429,7 +429,7 @@ int main(void)
  8000352:	0018      	movs	r0, r3
  8000354:	f000 f9d8 	bl	8000708 <HAL_Delay>
 			HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
- 8000358:	e7f2      	b.n	8000340 <vTask2.0+0xc>
+ 8000358:	e7f2      	b.n	8000340 <LED2Task.0+0xc>
  800035a:	46c0      	nop			; (mov r8, r8)
  800035c:	48000800 	.word	0x48000800
 
